@@ -29,10 +29,16 @@ class Board extends React.Component {
             square:Array(9).fill(null),
         };
     }
+    handleClick(i){
+        const square=this.state.square.slice();
+        square[i]='X';
+        this.setState({square:square})
+    }
     renderSquare(i){
-        return <Square value={this.state.square[i]}
+        return( <Square value={this.state.square[i]}
         onClick={()=> this.handleClick(i)}
-        />;
+        />
+        );
     }
     render(){
         const status = 'Next player : X';
