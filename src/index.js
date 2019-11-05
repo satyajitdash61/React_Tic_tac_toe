@@ -11,28 +11,29 @@ import * as serviceWorker from './serviceWorker';
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-class Square extends React.Component{
-    
-    render(){
+
+        function Square(props){
         return (
-            <button className="square" onClick={() =>
-                this.props.onClick()}>
-                {this.props.value}
+            <button className="square" onClick={props.onClick}>
+                {props.value}
             </button>
         );
     }
-}
 class Board extends React.Component {
     constructor(props){
         super(props);
         this.state={
             square:Array(9).fill(null),
+            xIsNext: true,
         };
     }
     handleClick(i){
         const square=this.state.square.slice();
-        square[i]='X';
-        this.setState({square:square})
+        square[i]=this.state.xIsNext ? 'X':'0';
+        this.setState({
+            square:square,
+            xIsNext : !this.state.xIsNext,
+        })
     }
     renderSquare(i){
         return( <Square value={this.state.square[i]}
@@ -41,7 +42,7 @@ class Board extends React.Component {
         );
     }
     render(){
-        const status = 'Next player : X';
+        const status = 'Next player : ' + (this.state.xIsNext ? 'X' : '0');
         return(
             <div>
                 <div className = "status">{status}</div>
@@ -86,3 +87,22 @@ ReactDOM.render(<Game />, document.getElementById('root'));
 //     <Game />,
 //     document.getElementById('root')
 // );
+function calculateWinner(square) {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      if (square[a] && square[a] === square[b] && square[a] === square[c]) {
+        return square[a];
+      }
+    }
+    return null;
+  }
