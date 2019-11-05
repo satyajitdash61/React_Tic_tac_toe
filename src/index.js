@@ -12,17 +12,12 @@ import * as serviceWorker from './serviceWorker';
 serviceWorker.unregister();
 
 class Square extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            value : null,
-        };
-    }
+    
     render(){
         return (
             <button className="square" onClick={() =>
-                this.setState({value : 'X'})}>
-                {this.state.value}
+                this.props.onClick()}>
+                {this.props.value}
             </button>
         );
     }
@@ -35,7 +30,7 @@ class Board extends React.Component {
         };
     }
     renderSquare(i){
-        return <Square value={this.state.squares[i]}
+        return <Square value={this.state.square[i]}
         onClick={()=> this.handleClick(i)}
         />;
     }
